@@ -6,7 +6,7 @@
   
   <groupId>fr.ign.cogit</groupId>
   <artifactId>evidence4j</artifactId>
-  <version>1.7-SNAPSHOT</version>
+  <version>1.0</version>
   <name>Dempster Shafer Theory</name>
   <description>
     A Dempster-Shafer (D-S) engine based on eVidenZ, an efficient D-S engine developed in C++ by the LRDE (Epita Research and Development laboratory).
