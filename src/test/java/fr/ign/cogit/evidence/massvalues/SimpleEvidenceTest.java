@@ -420,4 +420,187 @@ public class SimpleEvidenceTest {
     System.out.println("Test took " + (end - start) + " ms");
     System.out.println();
   }
+  @Test
+  public void testZadehJosang1() {
+    VariableFactory<String> vf = new VariableFactory<String>();
+    Variable<String> var = vf.newVariable();
+    var.add("Peter");
+    var.add("Paul");
+    var.add("Mary");
+    System.out.println("Variable: " + var);
+    VariableSet<String> d = new VariableSet<String>(vf);
+    d.add(var);
+    System.out.println("nb of configurations = " + d.getNumberOfConfigurations());
+    List<String> l11 = new ArrayList<String>();
+    l11.add("Peter");
+    Configuration<String> config11 = new Configuration<String>(d, l11);
+    ConfigurationSet<String> peter = new ConfigurationSet<String>(d);
+    peter.add(config11);
+    List<String> l12 = new ArrayList<String>();
+    l12.add("Paul");
+    Configuration<String> config12 = new Configuration<String>(d, l12);
+    ConfigurationSet<String> paul = new ConfigurationSet<String>(d);
+    paul.add(config12);
+    List<String> l13 = new ArrayList<String>();
+    l13.add("Mary");
+    Configuration<String> config13 = new Configuration<String>(d, l13);
+    ConfigurationSet<String> mary = new ConfigurationSet<String>(d);
+    mary.add(config13);
+    // first source
+    MassPotential<String> mp1 = new MassPotential<String>(d);
+    mp1.add(peter, 0.99);
+    mp1.add(paul, 0.01);
+    mp1.add(mary, 0.0);
+    mp1.check();
+    System.out.println("Source 1:\n" + mp1);
+    // second source
+    MassPotential<String> mp2 = new MassPotential<String>(d);
+    mp2.add(peter, 0.0);
+    mp2.add(paul, 0.01);
+    mp2.add(mary, 0.99);
+    mp2.check();
+    System.out.println("Source 2:\n" + mp2);
+    // combination
+    // Dempster
+    System.out.println("Dempster Rule");
+    MassPotential<String> dempsterPotential = mp1.combination(mp2);
+    System.out.println("MP 1 + MP 2:\n" + dempsterPotential);
+    double dr_paul = dempsterPotential.mass(paul);
+    Assert.assertEquals(1.0, dr_paul);
+    System.out.println("Cumulative Rule");
+    MassPotential<String> cumulativePotential = mp1.cumulativeRule(mp2, false);
+    System.out.println("MP 1 + MP 2:\n" + cumulativePotential);
+    double cr_peter = cumulativePotential.mass(peter);
+    Assert.assertEquals(0.495, cr_peter);
+    double cr_paul = cumulativePotential.mass(paul);
+    Assert.assertEquals(0.01, cr_paul);
+    double cr_mary = cumulativePotential.mass(mary);
+    Assert.assertEquals(0.495, cr_mary);
+  }
+  @Test
+  public void testZadehJosang2() {
+    VariableFactory<String> vf = new VariableFactory<String>();
+    Variable<String> var = vf.newVariable();
+    var.add("Peter");
+    var.add("Paul");
+    var.add("Mary");
+    System.out.println("Variable: " + var);
+    VariableSet<String> d = new VariableSet<String>(vf);
+    d.add(var);
+    System.out.println("nb of configurations = " + d.getNumberOfConfigurations());
+    List<String> l11 = new ArrayList<String>();
+    l11.add("Peter");
+    Configuration<String> config11 = new Configuration<String>(d, l11);
+    ConfigurationSet<String> peter = new ConfigurationSet<String>(d);
+    peter.add(config11);
+    List<String> l12 = new ArrayList<String>();
+    l12.add("Paul");
+    Configuration<String> config12 = new Configuration<String>(d, l12);
+    ConfigurationSet<String> paul = new ConfigurationSet<String>(d);
+    paul.add(config12);
+    List<String> l13 = new ArrayList<String>();
+    l13.add("Mary");
+    Configuration<String> config13 = new Configuration<String>(d, l13);
+    ConfigurationSet<String> mary = new ConfigurationSet<String>(d);
+    mary.add(config13);
+    ConfigurationSet<String> frame = new ConfigurationSet<String>(d);
+    frame.addAllConfigurations();
+    // first source
+    MassPotential<String> mp1 = new MassPotential<String>(d);
+    mp1.add(peter, 0.98);
+    mp1.add(paul, 0.01);
+    mp1.add(mary, 0.0);
+    mp1.add(frame, 0.01);
+    mp1.check();
+    System.out.println("Source 1:\n" + mp1);
+    // second source
+    MassPotential<String> mp2 = new MassPotential<String>(d);
+    mp2.add(peter, 0.0);
+    mp2.add(paul, 0.01);
+    mp2.add(mary, 0.98);
+    mp2.add(frame, 0.01);
+    mp2.check();
+    System.out.println("Source 2:\n" + mp2);
+    // combination
+    // Dempster
+    System.out.println("Dempster Rule");
+    MassPotential<String> dempsterPotential = mp1.combination(mp2);
+    System.out.println("MP 1 + MP 2:\n" + dempsterPotential);
+    double dr_peter = dempsterPotential.mass(peter);
+    Assert.assertEquals(0.49, dr_peter, 0.0001);
+    double dr_paul = dempsterPotential.mass(paul);
+    Assert.assertEquals(0.0150, dr_paul, 0.0001);
+    double dr_mary = dempsterPotential.mass(mary);
+    Assert.assertEquals(0.49, dr_mary, 0.0001);
+    double dr_frame = dempsterPotential.mass(frame);
+    Assert.assertEquals(0.0050, dr_frame, 0.0001);
+    System.out.println("Cumulative Rule");
+    MassPotential<String> cumulativePotential = mp1.cumulativeRule(mp2, false);
+    System.out.println("MP 1 + MP 2:\n" + cumulativePotential);
+    double cr_peter = cumulativePotential.mass(peter);
+    Assert.assertEquals(0.4925, cr_peter, 0.0001);
+    double cr_paul = cumulativePotential.mass(paul);
+    Assert.assertEquals(0.01, cr_paul, 0.0001);
+    double cr_mary = cumulativePotential.mass(mary);
+    Assert.assertEquals(0.4925, cr_mary, 0.0001);
+    double cr_frame = cumulativePotential.mass(frame);
+    Assert.assertEquals(0.0050, cr_frame, 0.0001);
+  }
+  @Test
+  public void testZadehJosang3() {
+    VariableFactory<String> vf = new VariableFactory<String>();
+    Variable<String> var = vf.newVariable();
+    var.add("M");
+    var.add("F");
+    System.out.println("Variable: " + var);
+    VariableSet<String> d = new VariableSet<String>(vf);
+    d.add(var);
+    System.out.println("nb of configurations = " + d.getNumberOfConfigurations());
+    List<String> l11 = new ArrayList<String>();
+    l11.add("M");
+    Configuration<String> config11 = new Configuration<String>(d, l11);
+    ConfigurationSet<String> confM = new ConfigurationSet<String>(d);
+    confM.add(config11);
+    List<String> l12 = new ArrayList<String>();
+    l12.add("F");
+    Configuration<String> config12 = new Configuration<String>(d, l12);
+    ConfigurationSet<String> confF = new ConfigurationSet<String>(d);
+    confF.add(config12);
+    ConfigurationSet<String> frame = new ConfigurationSet<String>(d);
+    frame.addAllConfigurations();
+    // first source
+    MassPotential<String> mp1 = new MassPotential<String>(d);
+    mp1.add(confM, 0.99);
+    mp1.add(confF, 0.00);
+    mp1.add(frame, 0.01);
+    mp1.check();
+    System.out.println("Source 1:\n" + mp1);
+    // second source
+    MassPotential<String> mp2 = new MassPotential<String>(d);
+    mp2.add(confM, 0.99);
+    mp2.add(confF, 0.00);
+    mp2.add(frame, 0.01);
+    mp2.check();
+    System.out.println("Source 2:\n" + mp2);
+    // combination
+    // Dempster
+    System.out.println("Dempster Rule");
+    MassPotential<String> dempsterPotential = mp1.combination(mp2);
+    System.out.println("MP 1 + MP 2:\n" + dempsterPotential);
+    double dr_m = dempsterPotential.mass(confM);
+    Assert.assertEquals(0.9999, dr_m, 0.0001);
+    double dr_f = dempsterPotential.mass(confF);
+    Assert.assertEquals(0.0, dr_f, 0.0001);
+    double dr_frame = dempsterPotential.mass(frame);
+    Assert.assertEquals(0.0001, dr_frame, 0.0001);
+    System.out.println("Cumulative Rule");
+    MassPotential<String> cumulativePotential = mp1.cumulativeRule(mp2, false);
+    System.out.println("MP 1 + MP 2:\n" + cumulativePotential);
+    double cr_m = cumulativePotential.mass(confM);
+    Assert.assertEquals(0.994975, cr_m, 0.0001);
+    double cr_f = cumulativePotential.mass(confF);
+    Assert.assertEquals(0.00, cr_f, 0.0001);
+    double cr_frame = cumulativePotential.mass(frame);
+    Assert.assertEquals(0.005025, cr_frame, 0.0001);
+  }
 }

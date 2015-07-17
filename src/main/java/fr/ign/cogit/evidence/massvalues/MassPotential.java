@@ -14,6 +14,7 @@ import fr.ign.cogit.evidence.variable.VariableSet;
  * A Potential represents a source of information.
  * <p>
  * TODO make the tolerance configurable.
+ * 
  * @author Julien Perret
  * @param <T>
  */
@@ -33,8 +34,9 @@ public class MassPotential<T> {
 
   /**
    * Construct an empty mass potential.
+   * 
    * @param d
-   *        a variable set
+   *          a variable set
    */
   public MassPotential(VariableSet<T> d) {
     this.variableSet = d;
@@ -43,12 +45,12 @@ public class MassPotential<T> {
   }
 
   /**
-   * Add a mass value for the given configuration set. If the focal element already exists, mass
-   * values are summed and the number of conflicts is incremented.
+   * Add a mass value for the given configuration set. If the focal element already exists, mass values are summed and the number of conflicts is incremented.
+   * 
    * @param f
-   *        a configuration set
+   *          a configuration set
    * @param m
-   *        a mass value
+   *          a mass value
    */
   public void add(ConfigurationSet<T> f, double m) {
     // System.out.println("add " + (f.getVariableSet() == this.variableSet));
@@ -81,8 +83,9 @@ public class MassPotential<T> {
 
   /**
    * Combine 2 mass potentials. By default, the result will be normalized.
+   * 
    * @param p
-   *        another mass potential
+   *          another mass potential
    * @return the combination of the 2 mass potentials
    */
   public MassPotential<T> combination(MassPotential<T> p) {
@@ -93,10 +96,11 @@ public class MassPotential<T> {
    * Combine 2 mass potentials.
    * <p>
    * TODO make the tolerance used for the focal elements not to grow too much configurable.
+   * 
    * @param p
-   *        another mass potential
+   *          another mass potential
    * @param normalize
-   *        if true, normalize the result
+   *          if true, normalize the result
    * @return the combination of the 2 mass potentials
    */
   public MassPotential<T> combination(MassPotential<T> p, boolean normalize) {
@@ -111,11 +115,8 @@ public class MassPotential<T> {
     for (Entry<ConfigurationSet<T>, Double> foc : p.focalElements.entrySet()) {
       focal2.put(foc.getKey().getExtended(varSet), foc.getValue());
     }
-    // System.out.println("combination");
     for (Entry<ConfigurationSet<T>, Double> foc1 : focal1.entrySet()) {
       for (Entry<ConfigurationSet<T>, Double> foc2 : focal2.entrySet()) {
-        // System.out.println(foc1.getKey().and(foc2.getKey()) + " = " + foc1.getValue() *
-        // foc2.getValue());
         double comb = foc1.getValue() * foc2.getValue();
         if (comb > 0.00001) { // 0.0001
           result.add(foc1.getKey().and(foc2.getKey()), comb);
@@ -129,27 +130,23 @@ public class MassPotential<T> {
 
   /**
    * Combine a set of mass potentials.
+   * 
    * @param potentialSet
-   *        a set of mass potentials
+   *          a set of mass potentials
    * @param normalize
-   *        if true, normalize the results
+   *          if true, normalize the results
    * @return a combination of all mass potentials
    */
-  public static <T> MassPotential<T> combination(Set<MassPotential<T>> potentialSet,
-      boolean normalize) {
+  public static <T> MassPotential<T> combination(Set<MassPotential<T>> potentialSet, boolean normalize) {
     assert (!potentialSet.isEmpty());
     MassPotential<T> result = null;
-    // int i = 0;
     for (MassPotential<T> p : potentialSet) {
-      // System.out.println("combining " + (i++));
       result = (result == null) ? p : result.combination(p, normalize);
-      // System.out.println("MP\n" + result);
     }
     return result;
   }
 
-  public MassPotential<T> combinationForPatiallyOverlappingFrames(MassPotential<T> p,
-      boolean normalize) {
+  public MassPotential<T> combinationForPatiallyOverlappingFrames(MassPotential<T> p, boolean normalize) {
     Map<ConfigurationSet<T>, Double> focal1 = new HashMap<ConfigurationSet<T>, Double>();
     Map<ConfigurationSet<T>, Double> focal2 = new HashMap<ConfigurationSet<T>, Double>();
     VariableSet<T> varSet = this.variableSet.union(p.variableSet);
@@ -160,10 +157,8 @@ public class MassPotential<T> {
     for (Entry<ConfigurationSet<T>, Double> foc : p.focalElements.entrySet()) {
       focal2.put(foc.getKey().getExtended(varSet), foc.getValue());
     }
-    // System.out.println("combination");
     for (Entry<ConfigurationSet<T>, Double> foc1 : focal1.entrySet()) {
       for (Entry<ConfigurationSet<T>, Double> foc2 : focal2.entrySet()) {
-        // System.out.println(foc1.getKey() + " + " + foc2.getKey());
         double comb = foc1.getValue() * foc2.getValue();
         if (comb > 0) {
           result.add(foc1.getKey().and(foc2.getKey()), comb);
@@ -239,15 +234,54 @@ public class MassPotential<T> {
   }
 
   /**
+   * Combine 2 mass potentials using the cumulative rule from Audun Jøsang, Javier Diaz, Maria Rifqi, Cumulative and averaging fusion of beliefs, Information
+   * Fusion, Volume 11, Issue 2, April 2010, Pages 192-200, ISSN 1566-2535, http://dx.doi.org/10.1016/j.inffus.2009.05.005.
+   * (http://www.sciencedirect.com/science/article/pii/S156625350900044X).
+   * 
+   * @param p
+   *          another mass potential
+   * @param normalize
+   *          if true, normalize the result
+   * @return the combination of the 2 mass potentials
+   */
+  public MassPotential<T> cumulativeRule(MassPotential<T> p, boolean normalize) {
+    VariableSet<T> varSet = (this.variableSet == p.variableSet) ? this.variableSet : this.variableSet.union(p.variableSet);
+    ConfigurationSet<T> frame = new ConfigurationSet<T>(varSet);
+    frame.addAllConfigurations();
+    double mdA = this.mass(frame);
+    double mdB = p.mass(frame);
+    MassPotential<T> result = new MassPotential<T>(varSet);
+    if (mdA != 0 || mdB != 0) {
+      // case I
+      double denominator = mdA + mdB - mdA * mdB;
+      for (Entry<ConfigurationSet<T>, Double> foc : this.focalElements.entrySet()) {
+        result.add(foc.getKey().getExtended(varSet), foc.getValue() * mdB / denominator);
+      }
+      for (Entry<ConfigurationSet<T>, Double> foc : p.focalElements.entrySet()) {
+        result.add(foc.getKey().getExtended(varSet), foc.getValue() * mdA / denominator);
+      }
+      // We need to actually retract from the frame since if the frame is in both focal sets, its product will already have been added twice
+      result.add(frame, -mdA * mdB / denominator);
+    } else {
+      // case II
+      for (Entry<ConfigurationSet<T>, Double> foc : this.focalElements.entrySet()) {
+        result.add(foc.getKey().getExtended(varSet), foc.getValue() * 0.5);
+      }
+      for (Entry<ConfigurationSet<T>, Double> foc : p.focalElements.entrySet()) {
+        result.add(foc.getKey().getExtended(varSet), foc.getValue() * 0.5);
+      }
+    }
+    return normalize ? result.norm() : result;
+  }
+
+  /**
    * Normalize the mass potential.
+   * 
    * @return the normalized mass potential
    */
   public MassPotential<T> norm() {
     ConfigurationSet<T> empty = new ConfigurationSet<T>(this.variableSet);
     Double v = this.focalElements.get(empty);
-    // if (v == null) {
-    // return this;
-    // }
     if (v != null) {
       double complement = 1 - v.doubleValue();
       for (Entry<ConfigurationSet<T>, Double> foc : this.focalElements.entrySet()) {
@@ -267,8 +301,9 @@ public class MassPotential<T> {
 
   /**
    * Weaken the mass potential.
+   * 
    * @param confidence
-   *        a confidence value
+   *          a confidence value
    * @return the weakened mass potential
    */
   public MassPotential<T> weaken(double confidence) {
@@ -295,6 +330,7 @@ public class MassPotential<T> {
 
   /**
    * Plausibility.
+   * 
    * @param f
    * @return
    */
@@ -311,6 +347,7 @@ public class MassPotential<T> {
 
   /**
    * Doubt.
+   * 
    * @param f
    * @return
    */
@@ -320,6 +357,7 @@ public class MassPotential<T> {
 
   /**
    * Commonality.
+   * 
    * @param f
    * @return
    */
@@ -336,6 +374,7 @@ public class MassPotential<T> {
 
   /**
    * Ignorance.
+   * 
    * @param f
    * @return
    */
@@ -347,6 +386,7 @@ public class MassPotential<T> {
 
   /**
    * Mass value for the given configuration set.
+   * 
    * @param f
    * @return
    */
@@ -361,6 +401,7 @@ public class MassPotential<T> {
 
   /**
    * Pignistic probability.
+   * 
    * @param ffinal
    * @return
    */
@@ -377,6 +418,7 @@ public class MassPotential<T> {
 
   /**
    * Pignistic probability.
+   * 
    * @param f
    * @return
    */
@@ -406,8 +448,9 @@ public class MassPotential<T> {
 
   /**
    * Make a decision.
+   * 
    * @param onSingles
-   *        if true, only chose among singles
+   *          if true, only chose among singles
    * @return
    */
   public ConfigurationSet<T> decide(boolean onSingles) {
@@ -416,6 +459,7 @@ public class MassPotential<T> {
 
   /**
    * Choose the solution with the maximum pignistic probability.
+   * 
    * @param onSingles
    * @return
    */
