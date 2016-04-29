@@ -3,6 +3,7 @@ package fr.ign.cogit.evidence.configuration;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.ign.cogit.evidence.variable.Variable;
 import fr.ign.cogit.evidence.variable.VariableSet;
 
 /**
@@ -60,5 +61,9 @@ public class Configuration<T> {
     }
     result += "}";
     return result;
+  }
+  
+  public Variable<T> getNthRealisationVariable(int counter) {
+    return this.variableSet.getNthVariable(counter);
   }
 }
