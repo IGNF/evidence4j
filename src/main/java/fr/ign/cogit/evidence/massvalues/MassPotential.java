@@ -127,6 +127,8 @@ public class MassPotential<T> {
     focal2.clear();
     return normalize ? result.norm() : result;
   }
+  
+  
 
   /**
    * Combine a set of mass potentials.
@@ -273,6 +275,17 @@ public class MassPotential<T> {
     }
     return normalize ? result.norm() : result;
   }
+  
+  
+  public Double getConflit() {
+    ConfigurationSet<T> empty = new ConfigurationSet<T>(this.variableSet);
+    Double v = this.focalElements.get(empty);
+    if (v != null) {
+      return v.doubleValue();
+    } 
+    return -1.0;
+  }
+  
 
   /**
    * Normalize the mass potential.
@@ -486,7 +499,7 @@ public class MassPotential<T> {
         if (pig > maxpig) {
           maxpig = pig;
           maxpignistic = c;
-        }
+        } 
       }
       conf.clear();
       if (maxpignistic != null) {
@@ -507,4 +520,5 @@ public class MassPotential<T> {
     }
     return maxpignistic;
   }
+  
 }
