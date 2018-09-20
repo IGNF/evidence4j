@@ -23,7 +23,7 @@ public class MassPotential<T> {
   private VariableSet<T> variableSet;
   private Map<ConfigurationSet<T>, Double> focalElements;
   private int conflict;
-  private double tolerance = 0.001;
+  private double tolerance = 0.0001;
 
   /**
    * @return number of focal elements
@@ -446,7 +446,10 @@ public class MassPotential<T> {
         result += foc.getValue().doubleValue() / (cardinal * (1d - mempty));
       }
     }
-    assert (result <= 1.0);
+    // FIXME define a tolerance
+    if (result > 1.0 + this.tolerance) {
+    	throw new AssertionError();
+    }
     return result;
   }
 
