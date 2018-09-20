@@ -12,9 +12,10 @@ import fr.ign.cogit.evidence.variable.VariableSet;
  * @param <T>
  */
 public class Configuration<T> {
+  
   private List<Integer> values;
   private VariableSet<T> variableSet;
-
+  
   public Configuration(VariableSet<T> d, List<T> l) {
     assert (l.size() == d.getNumberOfVariables());
     this.variableSet = d;

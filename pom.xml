@@ -11,14 +11,14 @@
 	<description>
     A Dempster-Shafer (D-S) engine based on eVidenZ, an efficient D-S engine developed in C++ by the LRDE (Epita Research and Development laboratory).
     </description>
-    
-    <!-- =========================================================== -->
-    <!-- Revision control -->
-    <!-- =========================================================== -->
-    <scm>
-        <url>https://github.com/IGNF/evidence4j</url>
-        <connection>scm:git:git://github.com/IGNF/evidence4j.git</connection>
-    </scm>
+
+	<!-- =========================================================== -->
+	<!-- Revision control -->
+	<!-- =========================================================== -->
+	<scm>
+		<url>https://github.com/IGNF/evidence4j</url>
+		<connection>scm:git:git://github.com/IGNF/evidence4j.git</connection>
+	</scm>
 
 	<developers>
 		<developer>
@@ -45,7 +45,6 @@
 			<version>4.10</version>
 			<scope>test</scope>
 		</dependency>
-
 	</dependencies>
 
 
@@ -70,62 +69,69 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.5.1</version>
 				<configuration>
-					<compilerVersion>1.7</compilerVersion>
-					<source>1.7</source>
-					<complianceLevel>1.7</complianceLevel>
-					<target>1.7</target>
+					<compilerVersion>1.8</compilerVersion>
+					<source>1.8</source>
+					<complianceLevel>1.8</complianceLevel>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>2.6</version>
-				<configuration>
-					<formats>
-						<format>xml</format>
-					</formats>
-				</configuration>
-			</plugin>
+			
 
 		</plugins>
 	</build>
 
 	<!-- =========================================================== -->
-	<!--  Repository    -->
+	<!-- Repository -->
 	<!-- =========================================================== -->
 	<repositories>
-		<repository>
-			<id>opengeo</id>
-			<url>http://repo.opengeo.org</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-
-    <!-- =========================================================== -->
-    <!--  Ditribution Management   -->
-    <!-- =========================================================== -->
-	<distributionManagement>
-        <downloadUrl>http://sourceforge.net/projects/oxygene-project/files/</downloadUrl>
         <repository>
-            <id>releases</id>
-            <name>Nexus Releases Repository</name>
-            <url>https://forge-cogit.ign.fr/nexus/content/repositories/releases</url>
+            <id>Central</id>
+            <name>Central Repository</name>
+            <url>http://repo1.maven.org/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
-        <snapshotRepository>
-            <id>snapshots</id>
-            <name>Nexus Snapshots Repository</name>
-            <url>https://forge-cogit.ign.fr/nexus/content/repositories/snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
+	</repositories>
+	
+	
+	<!-- =========================================================== -->
+    <!-- Plugin Repositories -->
+    <!-- =========================================================== -->
+    <pluginRepositories>
+        <pluginRepository>
+            <id>Central</id>
+            <name>Central Repository</name>
+            <url>http://repo1.maven.org/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+	<!-- =========================================================== -->
+	<!-- Ditribution Management -->
+	<!-- =========================================================== -->
+	<distributionManagement>
+		<downloadUrl>http://sourceforge.net/projects/oxygene-project/files/</downloadUrl>
+		<repository>
+			<id>releases</id>
+			<name>Nexus Releases Repository</name>
+			<url>https://forge-cogit.ign.fr/nexus/content/repositories/releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name>Nexus Snapshots Repository</name>
+			<url>https://forge-cogit.ign.fr/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 
-    <!-- =========================================================== -->
-    <!--  Profiles :   -->
-    <!--     -  -->
-    <!-- =========================================================== -->
+	<!-- =========================================================== -->
+	<!-- Profiles : -->
+	<!-- - -->
+	<!-- =========================================================== -->
 	<profiles>
 		<profile>
 			<id>deployment</id>
