@@ -22,7 +22,7 @@ public class SimpleEvidenceTest {
   @Before
   public void setUp() throws Exception {
   }
-
+  
   @Test
   public void test() {
     System.out.println("TEST EVIDENZ");
@@ -62,7 +62,7 @@ public class SimpleEvidenceTest {
     player1.add(f11, m1);
     player1.add(f12, 1 - m1);
     player1.check();
-    System.out.println("Player 1:\n" + player1);
+    System.out.println("\nPlayer 1:\n" + player1);
     // second player
     VariableSet<String> d2 = new VariableSet<String>(vf);
     d2.add(murderer);
@@ -112,6 +112,7 @@ public class SimpleEvidenceTest {
     System.out.println("Test took " + (end - start) + " ms");
     System.out.println();
   }
+  
   @Test
   public void testSmets() {
     System.out.println("TEST SMETS");
@@ -603,4 +604,5 @@ public class SimpleEvidenceTest {
     double cr_frame = cumulativePotential.mass(frame);
     Assert.assertEquals(0.005025, cr_frame, 0.0001);
   }
+  
 }
