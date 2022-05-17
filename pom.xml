@@ -5,7 +5,7 @@
 
 	<groupId>fr.ign.cogit</groupId>
 	<artifactId>evidence4j</artifactId>
-	<version>1.1-SNAPSHOT</version>
+	<version>1.1</version>
 
 	<name>Dempster Shafer Theory</name>
 	<description>
@@ -18,6 +18,7 @@
 	<scm>
 		<url>https://github.com/IGNF/evidence4j</url>
 		<connection>scm:git:git://github.com/IGNF/evidence4j.git</connection>
+		<tag>HEAD</tag>
 	</scm>
 
 	<developers>
