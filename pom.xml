@@ -115,7 +115,7 @@
 	<!-- Ditribution Management -->
 	<!-- =========================================================== -->
 	<distributionManagement>
-		<downloadUrl>http://sourceforge.net/projects/oxygene-project/files/</downloadUrl>
+		<!-- <downloadUrl>http://sourceforge.net/projects/oxygene-project/files/</downloadUrl>
 		<repository>
 			<id>releases</id>
 			<name>Nexus Releases Repository</name>
@@ -125,7 +125,12 @@
 			<id>snapshots</id>
 			<name>Nexus Snapshots Repository</name>
 			<url>https://forge-cogit.ign.fr/nexus/content/repositories/snapshots/</url>
-		</snapshotRepository>
+		</snapshotRepository> -->
+		<repository>
+			<id>github</id>
+			<name>GitHub IGNF evidence4j Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/IGNF/evidence4j</url>
+		</repository>
 	</distributionManagement>
 
 
