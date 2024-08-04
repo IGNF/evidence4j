@@ -1,91 +1,118 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-	<groupId>fr.ign.cogit</groupId>
-	<artifactId>evidence4j</artifactId>
-	<version>1.1</version>
+    <groupId>fr.umr-lastig</groupId>
+    <artifactId>evidence4j</artifactId>
+    <version>1.2</version>
+    <packaging>jar</packaging>
 
-	<name>Dempster Shafer Theory</name>
-	<description>
-    A Dempster-Shafer (D-S) engine based on eVidenZ, an efficient D-S engine developed in C++ by the LRDE (Epita Research and Development laboratory).
+    <name>Dempster Shafer Theory</name>
+    <description>
+        A Dempster-Shafer (D-S) engine based on eVidenZ, an efficient D-S engine
+        developed in C++ by the LRDE (Epita Research and Development
+        laboratory).
     </description>
+    
+    <url>https://github.com/IGNF/evidence4j</url>
+    
+    <organization>
+        <name>LaSTIG</name>
+        <url>https://www.umr-lastig.fr/</url>
+    </organization>
+    
+    <licenses>
+        <license>
+            <name>GNU GENERAL PUBLIC LICENSE</name>
+            <url>https://github.com/IGNF/evidence4j/blob/master/COPYING</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
-	<!-- =========================================================== -->
-	<!-- Revision control -->
-	<!-- =========================================================== -->
-	<scm>
-		<url>https://github.com/IGNF/evidence4j</url>
-		<connection>scm:git:git://github.com/IGNF/evidence4j.git</connection>
-		<tag>HEAD</tag>
-	</scm>
+    <!-- =========================================================== -->
+    <!-- Revision control -->
+    <!-- =========================================================== -->
+    <scm>
+        <url>https://github.com/IGNF/evidence4j</url>
+        <connection>scm:git:git://github.com/IGNF/evidence4j.git</connection>
+        <tag>HEAD</tag>
+    </scm>
 
-	<developers>
-		<developer>
-			<id>julienperret</id>
-			<name>Julien Perret</name>
-			<email>julien.perret AT gmail.com</email>
-			<organization>IGN</organization>
-			<organizationUrl>http://www.ign.fr</organizationUrl>
-			<roles>
-				<role>developer</role>
-			</roles>
-		</developer>
-	</developers>
+    <developers>
+        <developer>
+            <id>julienperret</id>
+            <name>Julien Perret</name>
+            <email>julien.perret AT gmail.com</email>
+            <organization>IGN</organization>
+            <organizationUrl>http://www.ign.fr</organizationUrl>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
-	<dependencies>
-		<!-- Scope TEST -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.13.1</version>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+    <dependencies>
+        <!-- Scope TEST -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
 
-	<build>
-		<sourceDirectory>src/main/java</sourceDirectory>
-		<testSourceDirectory>src/test/java</testSourceDirectory>
-		<resources>
-			<resource>
-				<filtering>true</filtering>
-				<directory>src/main/resources</directory>
-			</resource>
-		</resources>
-		<testResources>
-			<testResource>
-				<directory>src/test/resources</directory>
-			</testResource>
-		</testResources>
+    <build>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <testSourceDirectory>src/test/java</testSourceDirectory>
+        <resources>
+            <resource>
+                <filtering>true</filtering>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+        </testResources>
 
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.5.1</version>
-				<configuration>
-					<compilerVersion>1.8</compilerVersion>
-					<source>1.8</source>
-					<complianceLevel>1.8</complianceLevel>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
+                <configuration>
+                    <compilerVersion>1.8</compilerVersion>
+                    <source>1.8</source>
+                    <complianceLevel>1.8</complianceLevel>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
-			
-
-		</plugins>
-	</build>
-
-	<!-- =========================================================== -->
-	<!-- Repository -->
-	<!-- =========================================================== -->
-	<repositories>
+    <!-- =========================================================== -->
+    <!-- Repository -->
+    <!-- =========================================================== -->
+    <repositories>
         <repository>
             <id>Central</id>
             <name>Central Repository</name>
@@ -94,10 +121,10 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
-	</repositories>
-	
-	
-	<!-- =========================================================== -->
+    </repositories>
+
+
+    <!-- =========================================================== -->
     <!-- Plugin Repositories -->
     <!-- =========================================================== -->
     <pluginRepositories>
@@ -111,71 +138,124 @@
         </pluginRepository>
     </pluginRepositories>
 
-	<!-- =========================================================== -->
-	<!-- Ditribution Management -->
-	<!-- =========================================================== -->
-	<distributionManagement>
-		<!-- <downloadUrl>http://sourceforge.net/projects/oxygene-project/files/</downloadUrl>
-		<repository>
-			<id>releases</id>
-			<name>Nexus Releases Repository</name>
-			<url>https://forge-cogit.ign.fr/nexus/content/repositories/releases</url>
-		</repository>
-		<snapshotRepository>
-			<id>snapshots</id>
-			<name>Nexus Snapshots Repository</name>
-			<url>https://forge-cogit.ign.fr/nexus/content/repositories/snapshots/</url>
-		</snapshotRepository> -->
-		<repository>
-			<id>github</id>
-			<name>GitHub IGNF evidence4j Apache Maven Packages</name>
-			<url>https://maven.pkg.github.com/IGNF/evidence4j</url>
-		</repository>
-	</distributionManagement>
+    <!-- =========================================================== -->
+    <!-- Ditribution Management -->
+    <!-- =========================================================== -->
+    <distributionManagement>
+        <repository>
+            <id>ossrh</id>
+            <name>Nexus Releases Repository</name>
+            <url>https://s01.oss.sonatype.org/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <name>Nexus Snapshots Repository</name>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 
-	<!-- =========================================================== -->
-	<!-- Profiles : -->
-	<!-- - -->
-	<!-- =========================================================== -->
-	<profiles>
-		<profile>
-			<id>deployment</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>attach-javadocs</id>
-								<phase>package</phase>
-								<goals>
-									<goal>jar</goal>
-								</goals>
-							</execution>
-						</executions>
-						<configuration>
-							<aggregate>true</aggregate>
-						</configuration>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-source-plugin</artifactId>
-						<version>2.2.1</version>
-						<executions>
-							<execution>
-								<id>Attach-sources</id>
-								<phase>package</phase>
-								<goals>
-									<goal>jar</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
+    <!-- =========================================================== -->
+    <!-- Profiles : -->
+    <!-- - -->
+    <!-- =========================================================== -->
+    <profiles>
+        <profile>
+            <id>deployment</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <aggregate>true</aggregate>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>Attach-sources</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>ossrh</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.9.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.7</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                            <stagingProfileId>952745d70b68ca</stagingProfileId>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
