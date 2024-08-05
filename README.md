@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/IGNF/evidence4j.svg?branch=master)](https://travis-ci.org/IGNF/evidence4j)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![Maven Central](https://img.shields.io/maven-central/v/fr.umr-lastig/evidence4j.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22fr.umr-lastig%22%20AND%20a:%22evidence4j%22)
 
 # evidence4j
 A **Dempster-Shafer** (D-S) engine based on **eVidenZ**, an efficient D-S engine developed in *C++* by the [LRDE (Epita Research and Development laboratory)](https://www.lrde.epita.fr).
